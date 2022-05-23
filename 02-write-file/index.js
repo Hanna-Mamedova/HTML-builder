@@ -32,5 +32,3 @@ process.on('SIGINT', () => { process.exit(); });
 process.on('exit', () => stdout.write('Process ended!'));
 
 
-
-
