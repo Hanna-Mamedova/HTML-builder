@@ -13,9 +13,7 @@ console.log('Enter your text');
 // Получение введенных данных и запись текста в файл
 stdin.on('data', (data) => {
 
-  let dataStrignified = data.toString();
-
-  console.log('data:', dataStrignified);
+  let dataStrignified = data.toString().trim();
 
   // Проверка на exit
   if(dataStrignified === 'exit') {
@@ -27,11 +25,11 @@ stdin.on('data', (data) => {
   console.log('Enter one more text');
 });
 
+//Проверка на ctrl+c
+process.on('SIGINT', () => { process.exit(); });
+
 // Реализация прощального сообщения при остановке процесса
 process.on('exit', () => stdout.write('Process ended!'));
-process.on('SIGINT', () => {
-  process.exit();
-});
 
 
 
