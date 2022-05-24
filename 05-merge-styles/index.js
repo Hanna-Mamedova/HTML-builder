@@ -20,7 +20,7 @@ fs.readdir(stylePath, {withFileTypes: true}, (err, files) => {
                 
         fs.appendFile(bundlePath, data.toString(), (err) => {
           if(err) throw err;
-          console.log('Bundle created');
+          console.log(`Bundle ${file.name} created`);
         });
       });
     
