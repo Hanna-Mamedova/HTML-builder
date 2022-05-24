@@ -7,6 +7,9 @@ const distDir = path.join(__dirname, 'project-dist');
 const assetsDir = path.join(__dirname, 'assets');
 const assetsDirCopy = path.join(distDir, 'assets');
 
+const stylePath = path.join(__dirname, 'styles');
+const bundlePath = path.join(__dirname, 'project-dist', 'style.css');
+
 
 function copyFolder(folderPath, folderPathCopy) {
   fs.rm(folderPathCopy, { recursive: true }, () => {
@@ -42,9 +45,37 @@ function copyFile(from, to, file) {
   });
 }
 
+//COPY ASSETS
 function createAssetsCopy () {
   copyFolder(assetsDir, assetsDirCopy);
 }
-  
+
+function createStylesBundle() {
+  fs.readdir(stylePath, {withFileTypes: true}, (err, files) => {
+    if (err) throw err;
+      
+        
+    for (const file of files) {
+      
+      const fileExt = path.extname(file.name.toString());
+      const filePath = path.join(stylePath, file.name);
+      
+      if(file.isFile() && fileExt == '.css') {
+      
+        fs.readFile(filePath, (err, data) => {
+          if (err) throw err;
+                      
+          fs.appendFile(bundlePath, data.toString(), (err) => {
+            if(err) throw err;
+            console.log(`Bundle ${file.name} created`);
+          });
+        });
+          
+      }
+    }
+  });
+}
+
 createAssetsCopy();
+createStylesBundle();
 
