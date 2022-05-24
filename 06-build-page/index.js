@@ -10,6 +10,8 @@ const assetsDirCopy = path.join(distDir, 'assets');
 const stylePath = path.join(__dirname, 'styles');
 const bundlePath = path.join(__dirname, 'project-dist', 'style.css');
 
+const componentsPath = path.join(__dirname, 'components');
+
 
 function copyFolder(folderPath, folderPathCopy) {
   fs.rm(folderPathCopy, { recursive: true }, () => {
@@ -45,7 +47,6 @@ function copyFile(from, to, file) {
   });
 }
 
-//COPY ASSETS
 function createAssetsCopy () {
   copyFolder(assetsDir, assetsDirCopy);
 }
@@ -75,6 +76,22 @@ function createStylesBundle() {
     }
   });
 }
+
+function copyTemplateToIndex() {}
+
+function getTag() {}
+
+// function readComponent (componentPath) {
+//   fs.readFile(componentPath, (err, data) => {
+//     if(err) throw err;
+
+//     const componentContent = data.toString();
+    
+//     return componentContent;
+//   });
+// }
+
+function insertComponentToHTML() {}
 
 createAssetsCopy();
 createStylesBundle();
