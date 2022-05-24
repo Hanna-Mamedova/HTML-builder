@@ -67,7 +67,7 @@ function createStylesBundle() {
                       
           fs.appendFile(bundlePath, data.toString(), (err) => {
             if(err) throw err;
-            console.log(`Bundle ${file.name} created`);
+            console.log(`${file.name} added to bundle file`);
           });
         });
           
