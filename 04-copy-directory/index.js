@@ -4,7 +4,6 @@ const fs = require('fs');
 const filePath = path.join(__dirname, 'files');
 const fileCopyPath = path.join(__dirname, 'files-copy');
 
-
 function copyDir () {
 
   // delete directory
