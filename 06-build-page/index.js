@@ -11,6 +11,8 @@ const stylePath = path.join(__dirname, 'styles');
 const bundlePath = path.join(__dirname, 'project-dist', 'style.css');
 
 const componentsPath = path.join(__dirname, 'components');
+const templatePath = path.join(__dirname, 'template.html');
+const indexHTMLPath = path.join(distDir, 'index.html');
 
 
 function copyFolder(folderPath, folderPathCopy) {
@@ -77,22 +79,70 @@ function createStylesBundle() {
   });
 }
 
-function copyTemplateToIndex() {}
+function getComponentContent (componentName) {
+  const componentPath = path.join(componentsPath, `${componentName}.html`);
+  
+  fs.readFile(componentPath, (err, data) => {
+    if(err) throw err;
+  
+    return data.toString();
+  });
+}
 
-function getTag() {}
+// ЗАМЕНИТЬ КОНКТЕТ НА ДАННЫЕ ИЗ КОМПОНЕНТА!
 
-// function readComponent (componentPath) {
-//   fs.readFile(componentPath, (err, data) => {
-//     if(err) throw err;
+fs.copyFile(templatePath, indexHTMLPath, () => {
+  console.log('Template copied');
+});
 
-//     const componentContent = data.toString();
-    
-//     return componentContent;
-//   });
-// }
+function insertComponentToHTML () {
+    //create read streams to index.html
+  const readStreamIndexHTML = fs.createReadStream(indexHTMLPath, 'utf8');
 
-function insertComponentToHTML() {}
+  // get index content
+  let indexContent = '';
+  readStreamIndexHTML.on('data', chunk => indexContent += chunk);
 
-createAssetsCopy();
-createStylesBundle();
+  
+  // when content received
+  readStreamIndexHTML.on('end', () => {
+      
+      console.log('indexContent---', indexContent);
+      
+    // read components folder
+    fs.readdir(componentsPath, {withFileTypes: true}, (err, files) => { 
+        if (err) throw err;
+
+        for (const file of files) {
+
+            // get components names
+            const fileExt = path.extname(file.name.toString());
+            const fileName = file.name.replace(fileExt, '');
+        
+            // for each name of .html replace tag in co
+            if(file.isFile() && fileExt == '.html') {
+                indexContent = indexContent.replace(`{{${fileName}}}`, 'COMPONENTCONTENT');
+            }
+        }
+        // console.log('INDEXNEW:', indexContent); --- результат!!!!!
+
+        // write changed content to index
+        const writeStreamIndexHTML = fs.createWriteStream(indexHTMLPath, 'utf8');
+        writeStreamIndexHTML.write(indexContent);
+    });
+  });
+
+  readStreamIndexHTML.on('error', error => console.log('Error', error.message)); 
+
+}
+
+
+
+
+
+//РАСКОМЕНТИРОВАТЬ, ЧТОБЫ КОПИРОВАЛСЯ АССЕТС И СОБИРАЛИСЬ СТИЛИ
+
+// createAssetsCopy();
+// createStylesBundle();
+insertComponentToHTML();
 
