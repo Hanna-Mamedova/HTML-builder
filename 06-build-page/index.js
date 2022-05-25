@@ -108,7 +108,6 @@ function insertComponentToHTML () {
   readStreamIndexHTML.on('end', () => {
       
       console.log('indexContent---', indexContent);
-      
     // read components folder
     fs.readdir(componentsPath, {withFileTypes: true}, (err, files) => { 
         if (err) throw err;
@@ -121,7 +120,9 @@ function insertComponentToHTML () {
         
             // for each name of .html replace tag in co
             if(file.isFile() && fileExt == '.html') {
-                indexContent = indexContent.replace(`{{${fileName}}}`, 'COMPONENTCONTENT');
+                let componentContent = getComponentContent(fileName);
+                console.log('componentContent:', componentContent);
+                indexContent = indexContent.replace(`{{${fileName}}}`, componentContent);
             }
         }
         // console.log('INDEXNEW:', indexContent); --- результат!!!!!
