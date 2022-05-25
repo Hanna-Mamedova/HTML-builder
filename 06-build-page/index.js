@@ -91,9 +91,11 @@ function copyTemplateToIndex() {
   });
 }
 
+
 function insertComponentToHTML () {
+
   //create read streams to index.html
-  const readStreamIndexHTML = fs.createReadStream(indexHTMLPath, 'utf8');
+  const readStreamIndexHTML = fs.createReadStream(templatePath, 'utf8');
 
   // get index content
   let indexContent = '';
@@ -127,7 +129,6 @@ function insertComponentToHTML () {
   });
 
   readStreamIndexHTML.on('error', error => console.log('Error', error.message)); 
-
 }
 
 createAssetsCopy();
