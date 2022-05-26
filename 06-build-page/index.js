@@ -55,6 +55,8 @@ function createAssetsCopy () {
 }
 
 function createStylesBundle() {
+  fs.rm( bundlePath, { recursive: true }, () => {
+    console.log('css file removed');
   fs.readdir(stylePath, {withFileTypes: true}, (err, files) => {
     if (err) throw err;
       
@@ -78,7 +80,9 @@ function createStylesBundle() {
       }
     }
   });
+} );
 }
+
 
 async function getComponentContent(componentName) {
   const componentPath = path.join(componentsPath, `${componentName}.html`);
